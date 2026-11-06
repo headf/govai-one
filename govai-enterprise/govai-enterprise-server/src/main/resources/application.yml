@@ -1,0 +1,63 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: govai-enterprise
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 开发阶段:本机 MySQL root/123456(与骨架文档 root/root123 不同,以实际环境为准)
+    url: jdbc:mysql://127.0.0.1:3306/govai_enterprise?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "123456"
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      # 本机 Redis 未启动;代码层对 Redis 做降级处理,不阻塞启动
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 50MB
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      id-type: auto
+
+# ============ 自定义配置 ============
+govai:
+  # JWT(与全组一致,骨架文档 6.1)
+  jwt:
+    secret: ${JWT_SECRET:your-jwt-secret-change-me}
+    expire: 604800
+  # 跨服务调用地址(开发阶段直连,第 6 周联调切 Nacos)
+  feign:
+    approval-url: http://localhost:8082
+    supervision-url: http://localhost:8081
+  # 文件存储目录(材料/证照图片;开发阶段本地磁盘)
+  file:
+    upload-dir: D:/Desktop/企业实训-智能政务系统/govai-enterprise/upload
+  # OCR 识别服务(本地 PaddleOCR Python 服务)
+  ocr:
+    url: http://localhost:8090
+  # LLM 大模型(commandcode.ai,OpenAI 兼容接口,用于智能问答)
+  llm:
+    base-url: https://api.commandcode.ai/provider/v1
+    api-key: your-api-key-here
+    model: deepseek/deepseek-v4-flash
+
+# Knife4j 文档
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+

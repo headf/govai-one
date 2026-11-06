@@ -1,0 +1,94 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": { "navigationBarTitleText": "智慧政务", "enablePullDownRefresh": true }
+    },
+    {
+      "path": "pages/hall/hall",
+      "style": { "navigationBarTitleText": "办事大厅" }
+    },
+    {
+      "path": "pages/message/message",
+      "style": { "navigationBarTitleText": "消息中心", "enablePullDownRefresh": true }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": { "navigationBarTitleText": "我的" }
+    },
+    {
+      "path": "pages/matter/list",
+      "style": { "navigationBarTitleText": "事项列表", "enablePullDownRefresh": true }
+    },
+    {
+      "path": "pages/matter/detail",
+      "style": { "navigationBarTitleText": "事项详情" }
+    },
+    {
+      "path": "pages/apply/form",
+      "style": { "navigationBarTitleText": "在线申报" }
+    },
+    {
+      "path": "pages/record/list",
+      "style": { "navigationBarTitleText": "我的申报", "enablePullDownRefresh": true }
+    },
+    {
+      "path": "pages/record/detail",
+      "style": { "navigationBarTitleText": "申报详情" }
+    },
+    {
+      "path": "pages/record/progress",
+      "style": { "navigationBarTitleText": "办理进度" }
+    },
+    {
+      "path": "pages/message/detail",
+      "style": { "navigationBarTitleText": "消息详情" }
+    },
+    {
+      "path": "pages/evaluation/form",
+      "style": { "navigationBarTitleText": "评价办件" }
+    },
+    {
+      "path": "pages/evaluation/my",
+      "style": { "navigationBarTitleText": "我的评价" }
+    },
+    {
+      "path": "pages/policy/list",
+      "style": { "navigationBarTitleText": "政策推荐", "enablePullDownRefresh": true }
+    },
+    {
+      "path": "pages/policy/detail",
+      "style": { "navigationBarTitleText": "政策详情" }
+    },
+    {
+      "path": "pages/ai/chat",
+      "style": { "navigationBarTitleText": "AI政务助手" }
+    },
+    {
+      "path": "pages/login/login",
+      "style": { "navigationBarTitleText": "登录" }
+    },
+    {
+      "path": "pages/mine/profile",
+      "style": { "navigationBarTitleText": "个人资料" }
+    }
+  ],
+  "tabBar": {
+    "color": "#C9CDD4",
+    "selectedColor": "#2F6BFF",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/hall/hall", "text": "办事" },
+      { "pagePath": "pages/message/message", "text": "消息" },
+      { "pagePath": "pages/mine/mine", "text": "我的" }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "智慧政务",
+    "navigationBarBackgroundColor": "#2F6BFF",
+    "backgroundColor": "#F4F6FA"
+  }
+}

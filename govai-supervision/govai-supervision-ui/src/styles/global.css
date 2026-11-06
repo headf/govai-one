@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* GovAI One 统一视觉 token —— 政务蓝主色(Element Plus 变量覆盖) */
+:root {
+  --el-color-primary: #2f6bff;
+  --el-color-primary-light-3: #6d97ff;
+  --el-color-primary-light-5: #97b5ff;
+  --el-color-primary-light-7: #c1d3ff;
+  --el-color-primary-light-8: #d5e1ff;
+  --el-color-primary-light-9: #eaf0ff;
+  --el-color-primary-dark-2: #2656cc;
+  --govai-brand: #2f6bff;
+  --govai-brand-deep: #1a3a8f;
+}
+
+/* 全局基础样式 */
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+
+/* ===== GovAI 设计令牌 + 现代克制主题（DESIGN.md） ===== */
+:root {
+  --govai-bg: #f0f2f5;
+  --govai-surface: #ffffff;
+  --govai-panel: #f7f8fa;
+  --govai-border: #e4e7ed;
+  --govai-border-light: #ebeef5;
+  --govai-border-soft: rgba(16, 24, 40, 0.14);
+  --govai-ink: #303133;
+  --govai-ink-2: #606266;
+  --govai-ink-3: #909399;
+  --govai-radius-sm: 6px;
+  --govai-radius: 12px;
+  --govai-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+  --govai-shadow-hover: 0 2px 4px rgba(16, 24, 40, 0.06), 0 4px 12px rgba(16, 24, 40, 0.09);
+  --govai-focus: 0 0 0 2px rgba(47, 107, 255, 0.28);
+}
+
+body {
+  background: var(--govai-bg);
+  color: var(--govai-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 卡片：细边框 + 柔和影，替代 element 默认偏硬投影 */
+.el-card {
+  border-radius: var(--govai-radius);
+  border: 1px solid var(--govai-border-soft);
+  box-shadow: var(--govai-shadow);
+}
+.el-card.is-hover-shadow:hover {
+  box-shadow: var(--govai-shadow-hover);
+}
+
+/* 表格高密度与表头层次 */
+.el-table {
+  font-size: 13px;
+}
+.el-table th.el-table__cell {
+  background: var(--govai-panel) !important;
+  color: var(--govai-ink-2);
+  font-weight: 600;
+}
+.el-table .cell {
+  line-height: 1.5;
+}
+.el-table td .cell,
+.el-statistic {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 输入控件：圆角与焦点环 */
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select .el-input__wrapper {
+  border-radius: var(--govai-radius-sm);
+}
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused {
+  box-shadow: var(--govai-focus);
+}
+
+/* 按钮与标签统一 */
+.el-button {
+  border-radius: var(--govai-radius-sm);
+  font-weight: 500;
+}
+.el-tag {
+  border-radius: 4px;
+}
+.el-dialog {
+  border-radius: 10px;
+}
+
+/* 一致性：卡片头紧凑、分页右对齐 */
+.el-card__header {
+  padding: 14px 20px;
+}
+.el-card__header .section-title {
+  margin-bottom: 0;
+}
+.el-pagination {
+  justify-content: flex-end;
+}
+.el-card__body {
+  padding: 20px;
+}
+
+/* ===== Tailwind 组件类（三端共用） ===== */
+@layer components {
+  .g-page {
+    @apply mx-auto max-w-[1680px] p-4 md:p-6 pb-10 grid gap-4;
+  }
+  .g-card {
+    @apply bg-surface border border-line-soft rounded-md shadow-card;
+  }
+  .g-card-hover {
+    @apply transition duration-200 hover:shadow-card-hover hover:-translate-y-px hover:border-line-brand;
+  }
+  .g-block-title {
+    @apply text-subtitle text-ink pl-2 border-l-4 border-brand mb-3;
+  }
+  .g-btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 h-10 px-4 rounded-sm bg-brand text-white text-body font-medium cursor-pointer transition hover:bg-brand-dark active:translate-y-px;
+  }
+  .g-btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 h-10 px-4 rounded-sm bg-white text-ink-2 text-body font-medium border border-line-soft cursor-pointer transition hover:text-brand hover:border-line-brand;
+  }
+  .g-icon-tile {
+    @apply flex-none grid place-items-center rounded-md;
+  }
+}
+
+/* 关闭 preflight 的补偿：原生 <button> 默认边框(深色)会造成"黑边" */
+@layer base {
+  button:not([class*='el-']) {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+}

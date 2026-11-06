@@ -1,0 +1,26 @@
+{
+  "name": "GovAI智慧政务-群众端",
+  "appid": "",
+  "description": "智慧政务系统群众端(微信小程序 + H5)",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "touristappid",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "postcss": true,
+      "minified": true
+    },
+    "usingComponents": true
+  },
+  "h5": {
+    "title": "智慧政务",
+    "router": {
+      "mode": "hash",
+      "base": "/"
+    }
+  },
+  "vueVersion": "3"
+}

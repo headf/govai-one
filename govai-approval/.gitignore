@@ -1,0 +1,33 @@
+# 审批端根级忽略规则
+# (govai-approval-server/ 与 govai-approval-ui/ 下各有自己的 .gitignore,本文件补充根级)
+
+# ===== Java / Maven =====
+target/
+*.class
+*.jar
+!.mvn/wrapper/*.jar
+
+# ===== Node =====
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.tsbuildinfo
+.eslintcache
+
+# ===== IDE =====
+.idea/
+*.iml
+.vscode/
+.settings/
+
+# ===== 运行产物 =====
+# 注意: *.log 匹配不到 logs-*.txt,必须单独写一行
+*.log
+logs-*.txt
+logs/
+uploads/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db

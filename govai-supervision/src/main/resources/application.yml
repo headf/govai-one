@@ -1,0 +1,82 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: govai-supervision
+  profiles:
+    active: dev
+
+  # MySQL 数据源
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/govai_supervision?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 30000
+
+  # Redis 缓存
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 5000ms
+
+  # RabbitMQ 消息队列（接收审批端推送的审批数据）
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual   # 手动确认，保证审批数据不丢失
+        prefetch: 10
+
+# MyBatis-Plus
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.govai.supervision.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+
+# JWT（全组共享密钥，SSO 认证）
+# 注意：密钥必须与群众端/审批端/企业端保持一致，否则无法互相验证 Token
+govai:
+  jwt:
+    secret: ${JWT_SECRET:your-jwt-secret-change-me}
+    expire: 604800          # 7 天（秒）
+    header: Authorization
+    prefix: "Bearer "
+  # 企业端服务地址(监管端回填企业档案/看企业信用时调用)
+  profile:
+    enterprise-url: http://localhost:8084
+
+# Knife4j API 文档（访问 http://localhost:8081/doc.html）
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+
+knife4j:
+  enable: true
+  openapi3:
+    title: govai-supervision 监管端 API
+    description: GovAI One 智慧政务系统 - 监管端（SSO/信用/风险/统计）
+    version: 1.0.0
+
+logging:
+  level:
+    com.govai.supervision: info

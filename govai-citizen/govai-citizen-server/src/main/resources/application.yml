@@ -1,0 +1,63 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: govai-citizen
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/govai_citizen?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: "123456"
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000
+      lettuce:
+        pool:
+          enabled: false   # 不启动连接池,连接异常快速失败并降级
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 50MB
+  mvc:
+    static-path-pattern: /**
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 群众端自定义配置
+govai:
+  # JWT 共享密钥(4人一致), 与文档约定
+  jwt:
+    secret: ${JWT_SECRET:your-jwt-secret-change-me}
+    expire-seconds: 604800
+    header: Authorization
+    prefix: "Bearer "
+  upload:
+    dir: "C:/govai-tools/uploads"
+    url-prefix: /uploads/
+  # 开发阶段:本地自签登录(true); 接入监管端 SSO 后置 false,登录改走监管端认证中心并透传统一 token
+  mock-login: false
+  feign:
+    approval-url: http://localhost:8082
+    supervision-url: http://localhost:8081
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+logging:
+  level:
+    com.govai.citizen: info

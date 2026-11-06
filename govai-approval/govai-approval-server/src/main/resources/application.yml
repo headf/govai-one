@@ -1,0 +1,141 @@
+﻿# GovAI One 审批员端配置
+server:
+  port: 8082
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 200
+
+spring:
+  application:
+    name: govai-approval
+  profiles:
+    active: dev
+
+  # 数据源（虚拟机 Docker MySQL 8.0：localhost:3306 -> 3306）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/govai_approval?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+  # Redis 缓存
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          max-wait: -1ms
+
+  # RabbitMQ 推送审批数据到监管端
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    # 消息确认机制（correlated 异步确认）
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: auto
+        prefetch: 10
+
+  # Jackson
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+  # 云服务发现（第6周联调切换 Nacos；第1-5周用 url 直连 Feign）
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: public
+        enabled: false  # 开发阶段关闭，联调阶段改为 true
+
+# MyBatis-Plus
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.govai.approval.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT 共享密钥（全组必须一致：4人本地验证都靠它）
+jwt:
+  secret: ${JWT_SECRET:your-jwt-secret-change-me}
+  expire: 604800  # 7天（秒）
+  header: Authorization
+  prefix: 'Bearer '
+
+# AI 大模型配置（OpenAI 兼容协议，实测可用端点）
+ai:
+  model:
+    # commandcode.ai OpenAI 兼容接口(与全组共用 key)
+    api-key: your-api-key-here
+    base-url: https://api.commandcode.ai/provider/v1
+    # 用 flash-fast(非 reasoning)保证审批意见输出快且稳定;普通 flash 是 reasoning 版,易把 token 预算耗在思考上导致 content 为空且耗时 20s+
+    model-name: deepseek/deepseek-v4-flash-fast
+    temperature: 0.3
+    max-tokens: 800
+    timeout: 60
+
+# 跨服务目标地址（开发阶段直连，第6周联调改 Nacos）
+feign:
+  targets:
+    citizen: http://localhost:8083   # 群众端 - 调事项接口
+    enterprise: http://localhost:8084 # 企业端 - 调OCR接口
+    supervision: http://localhost:8081 # 监管端 - 调Token验证
+
+# RabbitMQ 审批数据推送配置（向监管端推送）
+mq:
+  approval:
+    exchange: approval.exchange
+    routing-key: approval.record.push
+    queue: approval.record.queue
+
+# Knife4j 接口文档
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    enable-version: true
+  documents:
+    - name: 审批员端接口文档
+      locations: classpath:mapper/
+      group: 审批员端
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+
+logging:
+  level:
+    com.govai.approval: debug
+    org.springframework.amqp: info
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n'
+
+
